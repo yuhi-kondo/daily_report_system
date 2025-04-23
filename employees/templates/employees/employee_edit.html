@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <title>従業員の編集</title>
-    </head>
-    <body>
+{% extends 'base.html' %}
+
+{% block title %}従業員の編集{% endblock %}
+
+{% block content %}
+
         <h1>従業員の編集</h1>
 
         <form method="POST" action="{% url 'employee_update' employee.pk %}">
@@ -19,5 +18,5 @@
         </form>
 
         <p><a href="{% url 'employee_index' %}">一覧へ戻る</a></p>
-    </body>
-</html>
+
+        {% endblock %}

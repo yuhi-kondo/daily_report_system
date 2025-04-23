@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <title>従業員の新規作成</title>
-    </head>
+{% extends 'base.html' %}
+
+{% block title %}従業員の新規作成{% endblock %}
+
+{% block content %}
+
     <body>
         <h1>従業員の新規作成</h1>
 
@@ -19,5 +19,4 @@
         </form>
 
         <p><a href="{% url 'employee_index' %}">一覧へ戻る</a></p>
-    </body>
-</html>
+{% endblock %}

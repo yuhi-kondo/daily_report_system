@@ -1,3 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}従業員の新規作成{% endblock %}
+
+{% block content %}
+
 {% if user.is_authenticated %}
     <h1>{{user.username }}さん、ようこそ！</h1>
     <ul>
@@ -11,3 +17,5 @@
     <h1>ログインしてください</h1>
     <a href="{% url 'login' %}">ログイン画面へ</a>
 {% endif %}
+
+{% endblock %}

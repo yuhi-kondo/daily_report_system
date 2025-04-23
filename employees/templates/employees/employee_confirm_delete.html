@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <title>従業員の削除確認</title>
-    </head>
-    <body>
+{% extends 'base.html' %}
+
+{% block title %}従業員の編集{% endblock %}
+
+{% block content %}
+
         <h1>削除の確認</h1>
         <p>{{ employee.name }} ({{ employee.email }}) を削除します。よろしいですか？
         </p>
@@ -13,5 +12,5 @@
             <button type="submit">削除</button>
             <a href="{% url 'employee_index' %}">キャンセル</a>
         </form>
-    </body>
-</html>
+
+        {% endblock %}
