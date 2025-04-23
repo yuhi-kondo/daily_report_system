@@ -5,7 +5,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .models import Employee
 from .forms import EmployeeUserForm
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView,DetailView,DeleteView
+from django.views.generic import ListView,DetailView,DeleteView,CreateView
 
 # Create your views here.
 def home(request):
@@ -76,6 +76,11 @@ class EmployeeDeleteView(DeleteView):
     model = Employee
     success_url = reverse_lazy('employee_index')
     
+@method_decorator(staff_member_required, name='dispatch')
+class EmployeeDetailView(DetailView):
+    model = Employee
+    template_name = 'employees/employee_detail.html'    
+    context_object_name = 'employee'
 
 @login_required
 @staff_member_required

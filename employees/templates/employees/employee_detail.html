@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}従業員詳細{% endblock %}
+
+{% block content %}
+
+
+        <h1>従業員詳細</h1>
+        <a href="{% url 'employee_new' %}" class="btn btn-sm btn-secondary">新規作成</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>名前</th>
+                    <th>部署</th>
+                    <th>ユーザー名</th>
+                    <th>アクション</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ employee.name }}</td>
+                    <td>{{ employee.department }}</td>
+                    <td>{{ employee.user.username }}</td>
+                    <td>
+                        <a href="{% url 'employee_edit' employee.pk %}" class="btn btn-sm btn-warning">編集</a> 
+                        <a href="{% url 'employee_confirm_delete' employee.pk %}" class="btn btn-sm btn-danger">削除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+{% endblock %}
