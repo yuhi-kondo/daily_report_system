@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import Employee
 from .forms import EmployeeUserForm
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView
 
 # Create your views here.
 def home(request):
@@ -32,11 +34,17 @@ def employee_new(request):
         form = EmployeeUserForm()
     return render(request, 'employees/employee_form.html', {'form':form})
 
-@login_required
+""" @login_required
 @staff_member_required
 def employee_list(request):
     employees = Employee.objects.all()
-    return render(request, 'employees/employee_list.html', {'employees': employees})
+    return render(request, 'employees/employee_list.html', {'employees': employees}) """
+
+@method_decorator(staff_member_required, name='dispatch')
+class EmployeeListView(ListView):
+    model = Employee
+    template_name= 'employees/index.html'
+    context_object_name = 'employees'
 
 @login_required
 @staff_member_required
