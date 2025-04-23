@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import Employee
 from .forms import EmployeeUserForm
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView,DeleteView
 
 # Create your views here.
 def home(request):
@@ -43,7 +44,7 @@ def employee_list(request):
 @method_decorator(staff_member_required, name='dispatch')
 class EmployeeListView(ListView):
     model = Employee
-    template_name= 'employees/index.html'
+    template_name= 'employees/employee_list.html'
     context_object_name = 'employees'
 
 @login_required
@@ -63,12 +64,18 @@ def employee_update(request, pk):
         return redirect('employee_index')
     return redirect('employee_edit', pk=pk)
 
-@login_required
+""" @login_required
 @staff_member_required
 def employee_delete(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     employee.delete()
-    return redirect('employee_index')
+    return redirect('employee_index') """
+
+@method_decorator(staff_member_required, name='dispatch')
+class EmployeeDeleteView(DeleteView):
+    model = Employee
+    success_url = reverse_lazy('employee_index')
+    
 
 @login_required
 @staff_member_required
