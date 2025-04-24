@@ -26,6 +26,7 @@ def employee_create(request):
 @login_required
 @staff_member_required
 def employee_new(request):
+    '''従業員の新規作成'''
     if request.method == 'POST':
         form = EmployeeUserForm(request.POST)
         if form.is_valid():
