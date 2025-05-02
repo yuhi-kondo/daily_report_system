@@ -5,12 +5,20 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .models import Employee
 from .forms import EmployeeUserForm
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView,DetailView,DeleteView,CreateView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    DeleteView,
+    CreateView,
+    UpdateView,
+)
+
 
 # Create your views here.
 def home(request):
     '''トップページ'''
     return render(request, 'home.html')
+
 
 """ @login_required
 @staff_member_required
@@ -23,6 +31,7 @@ def employee_create(request):
         return redirect('employee_index')
     return redirect('employee_new') """
 
+
 @login_required
 @staff_member_required
 def employee_new(request):
@@ -34,7 +43,16 @@ def employee_new(request):
             return redirect('employee_index')
     else:
         form = EmployeeUserForm()
-    return render(request, 'employees/employee_form.html', {'form':form})
+    return render(request, 'employees/employee_form.html', {'form': form})
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class EmployeeCreateView(CreateView):
+    model = Employee
+
+    template_name = 'employees/employee_new.html'
+    context_object_name = 'employees'
+
 
 """ @login_required
 @staff_member_required
@@ -42,17 +60,20 @@ def employee_list(request):
     employees = Employee.objects.all()
     return render(request, 'employees/employee_list.html', {'employees': employees}) """
 
+
 @method_decorator(staff_member_required, name='dispatch')
 class EmployeeListView(ListView):
     model = Employee
-    template_name= 'employees/employee_list.html'
+    template_name = 'employees/employee_list.html'
     context_object_name = 'employees'
+
 
 @login_required
 @staff_member_required
 def employee_edit(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
-    return render(request, 'employees/employee_edit.html', {'employee':employee})
+    return render(request, 'employees/employee_edit.html', {'employee': employee})
+
 
 @login_required
 @staff_member_required
@@ -65,6 +86,7 @@ def employee_update(request, pk):
         return redirect('employee_index')
     return redirect('employee_edit', pk=pk)
 
+
 """ @login_required
 @staff_member_required
 def employee_delete(request, pk):
@@ -72,21 +94,26 @@ def employee_delete(request, pk):
     employee.delete()
     return redirect('employee_index') """
 
+
 @method_decorator(staff_member_required, name='dispatch')
 class EmployeeDeleteView(DeleteView):
     model = Employee
     success_url = reverse_lazy('employee_index')
-    
+
+
 @method_decorator(staff_member_required, name='dispatch')
 class EmployeeDetailView(DetailView):
     model = Employee
-    template_name = 'employees/employee_detail.html'    
+    template_name = 'employees/employee_detail.html'
     context_object_name = 'employee'
+
 
 @login_required
 @staff_member_required
 def employee_confirm_delete(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     if request.method == 'POST':
-        return redirect('employee_delete',pk=pk)
-    return render(request,'employees/employee_confirm_delete.html',{"employee":employee})
+        return redirect('employee_delete', pk=pk)
+    return render(
+        request, 'employees/employee_confirm_delete.html', {"employee": employee}
+    )
